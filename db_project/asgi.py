@@ -1,5 +1,5 @@
 """
-ASGI config for traffic_camera_controller project.
+ASGI config for db_project project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'traffic_camera_controller.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'db_project.settings')
 
 application = get_asgi_application()
