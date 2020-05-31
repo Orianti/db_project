@@ -1,5 +1,7 @@
 from django.db import models
 
+from app.managers import SpecificationsManager, CameraManager, ServiceManager
+
 
 class City(models.Model):
     name = models.CharField(max_length=30, verbose_name='название')
@@ -18,8 +20,14 @@ class Location(models.Model):
     support = models.IntegerField(verbose_name='номер опоры')
     notes = models.TextField(verbose_name='заметки')
 
+    def get_location(self):
+        if self.support:
+            return f'{self.city}, {self.street} (опора {self.support})'
+        else:
+            return f'{self.city}, {self.street}'
+
     def __str__(self):
-        return f'{self.city}, {self.street}, {self.support}'
+        return self.get_location()
 
     class Meta:
         verbose_name = 'положение'
@@ -37,8 +45,11 @@ class State(models.Model):
     state = models.IntegerField(choices=STATES, verbose_name='состояние')
     logs = models.TextField(verbose_name='журнал')
 
+    def get_state(self):
+        self.get_state_display()
+
     def __str__(self):
-        return self.get_state_display()
+        return self.get_state()
 
     class Meta:
         verbose_name = 'состояние'
@@ -55,9 +66,6 @@ class Producer(models.Model):
     def __str__(self):
         return self.organization
 
-    def get_organization(self):
-        return self.organization
-
     class Meta:
         verbose_name = 'производитель'
         verbose_name_plural = 'производители'
@@ -65,14 +73,14 @@ class Producer(models.Model):
 
 class Specifications(models.Model):
     TYPES = (
-        (0, 'Speed'),
+        (0, 'SPEED'),
         (1, 'AVERAGE_SPEED'),
-        (2, 'RED_LIGHT'),
-        (3, 'DOUBLE_WHITE_LINE'),
-        (4, 'BUS_LANE'),
+        (2, 'RED LIGHT'),
+        (3, 'DOUBLE WHITE LINE'),
+        (4, 'BUS LANE'),
         (5, 'TOLLBOOTH'),
-        (6, 'LEVEL_CROSSING'),
-        (7, 'CONGESTION_CHARGE'),
+        (6, 'LEVEL CROSSING'),
+        (7, 'CONGESTION CHARGE'),
     )
 
     type = models.IntegerField(choices=TYPES, verbose_name='тип')
@@ -81,8 +89,13 @@ class Specifications(models.Model):
     service_frequency = models.IntegerField(verbose_name='частота сервисного обслуживания')
     notes = models.TextField(verbose_name='заметки')
 
+    objects = SpecificationsManager()
+
+    def get_type(self):
+        return self.get_type_display()
+
     def __str__(self):
-        return f'{self.get_type_display() ({self.producer.get_organization()})}'
+        return f'{self.get_type() ({self.producer.organization})}'
 
     class Meta:
         verbose_name = 'спецификация'
@@ -93,6 +106,8 @@ class Camera(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, verbose_name='местоположение')
     specifications = models.OneToOneField(Specifications, on_delete=models.CASCADE, verbose_name='спецификации')
     state = models.ForeignKey(State, on_delete=models.CASCADE, verbose_name='состояние')
+
+    objects = CameraManager()
 
     def __str__(self):
         return f'камера №{self.id}'
@@ -121,8 +136,11 @@ class Service(models.Model):
     camera = models.ForeignKey(Camera, on_delete=models.CASCADE, verbose_name='ID камеры')
     service_organization = models.ForeignKey(ServiceOrganization, on_delete=models.CASCADE,
                                              verbose_name='сервисная организация')
-    service_data = models.DateField(verbose_name='дата сервис')
+    registration_date = models.DateField(auto_now_add=True)
+    service_data = models.DateField(verbose_name='дата сервиса')
     info = models.TextField(verbose_name='информация')
+
+    objects = ServiceManager()
 
     def __str__(self):
         return f'сервис №{self.id}'
