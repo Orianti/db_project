@@ -62,7 +62,7 @@
                     {{ camera.location.get_location }}
                 </div>
 
-                <form id="delete_form" action="{% url 'delete_camera' camera.pk %}" method="post">
+                <form class="delete-camera-form" data-id="{{ camera.pk }}" action="{% url 'delete_camera' camera.pk %}" method="post">
                     {% csrf_token %}
                 </form>
 
@@ -71,7 +71,7 @@
                         Редактировать
                     </a>
 
-                    <a href="#" onclick="delete_camera()">
+                    <a class="delete-camera-button" data-id="{{ camera.pk }}" href="#">
                         Удалить
                     </a>
                 </div>
@@ -103,12 +103,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function delete_camera() {
-            if (confirm("Вы уверены, что хотите удалить камеру?")) {
-                document.getElementById('delete_form').submit()
-            }
-        }
-    </script>
 {% endblock %}
