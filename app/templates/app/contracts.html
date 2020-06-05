@@ -85,23 +85,16 @@
                     {{ organization.contract_expires }}
                 </div>
 
-                <form id="delete_form" action="{% url 'service_org_delete' organization.pk %}" method="post">
+                <form class="delete-form" data-id="{{ organization.pk }}" action="{% url 'service_org_delete' organization.pk %}" method="post">
                     {% csrf_token %}
                 </form>
-                <script>
-                    function delete_service_org() {
-                        if (confirm("Вы уверены, что хотите удалить организацию?")) {
-                            document.getElementById('delete_form').submit()
-                        }
-                    }
-                </script>
 
                 <div class="col-1 text-right">
                     <a href="{% url 'service_org_update' organization.pk %}" class="mr-1">
                         Редактировать
                     </a>
 
-                    <a href="javascript:void()" onclick="delete_service_org()">
+                    <a class="delete-button" data-id="{{ organization.pk }}" href="#">
                         Удалить
                     </a>
                 </div>
