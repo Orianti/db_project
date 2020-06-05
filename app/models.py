@@ -46,10 +46,10 @@ class State(models.Model):
     logs = models.TextField(verbose_name='журнал')
 
     def get_state(self):
-        self.get_state_display()
+        return f'{self.get_state_display()}'
 
     def __str__(self):
-        return self.get_state()
+        return f'{self.get_state()} ({self.logs})'
 
     class Meta:
         verbose_name = 'состояние'
@@ -95,7 +95,10 @@ class Specifications(models.Model):
         return self.get_type_display()
 
     def __str__(self):
-        return f'{self.get_type() ({self.producer.organization})}'
+        try:
+            return f'{self.get_type()} ({self.camera.__str__()})'
+        except Camera.DoesNotExist:
+            return f'{self.get_type()}'
 
     class Meta:
         verbose_name = 'спецификация'
@@ -110,7 +113,7 @@ class Camera(models.Model):
     objects = CameraManager()
 
     def __str__(self):
-        return f'камера №{self.id}'
+        return f'Камера №{self.id}'
 
     class Meta:
         verbose_name = 'камера'

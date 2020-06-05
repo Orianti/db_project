@@ -1,59 +1,81 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Аудит
+    Редактирование
 {% endblock %}
 
 {% block content %}
     <div class="container mt-4">
         <div class="row">
             <div class="col-10 align-self-center">
-                <h3>Список неисправных камер</h3>
+                <h3>Список камер</h3>
             </div>
             <div class="col-2 align-self-center text-right">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Добавить сервис
+                    Добавить камеру
                 </button>
             </div>
         </div>
     </div>
+
+    {% if update %}
+        <div class="container mt-4 align-self-center border rounded bg-light">
+            <div class="row p-3">
+                <h5>Редактирование камеры</h5>
+            </div>
+            <div class="row p-3">
+                <form id="add_form" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </form>
+            </div>
+            <div class="row p-3">
+                <a href="{% url 'camera_list' %}">
+                    <button type="button" class="btn btn-secondary mr-2">
+                        Отменить
+                    </button>
+                </a>
+                <button form="add_form" type="submit" class="btn btn-primary">
+                    Изменить
+                </button>
+            </div>
+        </div>
+    {% endif %}
 
     <div class="container">
         <div class="row border-bottom mt-4">
             <div class="col-1">
                 <b>Номер</b>
             </div>
-            <div class="col-7">
+            <div class="col-8">
                 <b>Местоположение</b>
             </div>
-            <div class="col-2">
-                <b>Состояние</b>
-            </div>
-            <div class="col-2"></div>
+            <div class="col-3"></div>
         </div>
         {% for camera in cameras %}
             <div class="row mt-2">
                 <div class="col-1">
                     {{ camera.pk }}
                 </div>
-                <div class="col-7">
+
+                <div class="col-8">
                     {{ camera.location.get_location }}
                 </div>
-                <div class="col-2">
-                    {% if camera.state.state == 0 %}
-                        <span class="badge badge-pill badge-success">Исправна</span>
-                    {% elif camera.state.state == 1 %}
-                        <span class="badge badge-pill badge-warning">Предупреждение</span>
-                    {% elif camera.state.state == 2 %}
-                        <span class="badge badge-pill badge-danger">Ошибка</span>
-                    {% elif camera.state.state == 3 %}
-                        <span class="badge badge-pill badge-dark">Отказ</span>
-                    {% endif %}
+
+                <form id="delete_form" action="{% url 'delete_camera' camera.pk %}" method="post">
+                    {% csrf_token %}
+                </form>
+
+                <div class="col-3 text-right">
+                    <a href="{% url 'update_camera' camera.pk %}" class="mr-1">
+                        Редактировать
+                    </a>
+
+                    <a href="#" onclick="delete_camera()">
+                        Удалить
+                    </a>
                 </div>
-                <div class="col-2 text-right">
-                    <a href="audit/detail/{{ camera.pk }}" class="mr-1">Подробнее</a>
-                    <a href="audit/services/{{ camera.pk }}">Сервисы</a>
-                </div>
+
             </div>
         {% endfor %}
     </div>
@@ -63,7 +85,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Добавление сервиса</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Добавление камеры</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -81,4 +103,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function delete_camera() {
+            if (confirm("Вы уверены, что хотите удалить камеру?")) {
+                document.getElementById('delete_form').submit()
+            }
+        }
+    </script>
 {% endblock %}

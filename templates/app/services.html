@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Редактирование
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h3>Обслуживания камеры №{{ camera.pk }}</h3>
+    </div>
+
+    <div class="container">
+        <div class="my-4">
+            <a href="/audit">
+                <button type="button" class="btn btn-secondary">
+                    ⮠ Вернуться к списку
+                </button>
+            </a>
+        </div>
+
+        {% if not services %}
+            <div class="alert alert-light" role="alert">
+                Камера еще не обслуживалась.
+            </div>
+        {% else %}
+
+            {% for service in services %}
+                <h5 class="mt-4">Обслуживание №{{ service.pk }}</h5>
+                <ul class="list-group">
+                    <li class="list-group-item bg-light">
+                        <b class="mr-2">Сервисная организация</b> {{ service.service_organization.organization }}
+                    </li>
+                    <li class="list-group-item">
+                        <b class="mr-2">Дата регистрации сервиса</b> {{ service.registration_date }}
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <b class="mr-2">Дата сервиса</b> {{ service.service_data }}
+                    </li>
+                    <li class="list-group-item">
+                        <b class="mr-2">Информация</b> {{ service.info }}
+                    </li>
+                </ul>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+    <div class="m-5"></div>
+{% endblock %}

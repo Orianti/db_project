@@ -26,16 +26,19 @@ class CameraManager(models.Manager):
         return q
 
     def get_problem(self):
-        return self.exclude(state__state='OK')
+        return self.exclude(state__state=0)
 
     def get_error(self):
-        return self.filter(state__state='ERROR')
+        return self.filter(state__state=1)
 
     def get_warning(self):
-        return self.filter(state__state='WARNING')
+        return self.filter(state__state=2)
 
     def get_failure(self):
-        return self.filter(state__state='FAILURE')
+        return self.filter(state__state=3)
+
+    def filter_pk(self, pk):
+        return self.filter(pk__in=pk)
 
 
 class ServiceOrganizationManager(models.Manager):
@@ -52,8 +55,11 @@ class ServiceManager(models.Manager):
 
         return q
 
-    def get_by_camera(self, camera_id):
-        return self.filter(camera=camera_id)
+    def get_by_camera(self, pk):
+        return self.filter(camera=pk)
+
+    def get_latest_by_camera(self, pk):
+        return self.filter(camera=pk).order_by('service_data')
 
     def get_not_served(self):
         return self.filter(service_data__lte=datetime.date.today())

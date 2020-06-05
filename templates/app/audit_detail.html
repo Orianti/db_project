@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Подробнее
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h3>Подробнее о камере</h3>
+    </div>
+
+    <div class="container">
+            <div class="my-4">
+                <a href="/audit">
+                    <button type="button" class="btn btn-secondary">
+                    ⮠ Вернуться к списку
+                </button>
+                </a>
+            </div>
+            <h5>Основная информация</h5>
+            <ul class="list-group mt-3">
+                <li class="list-group-item bg-light">
+                    <b class="mr-2">Номер</b> {{ camera.pk }}
+                </li>
+                <li class="list-group-item">
+                    <b class="mr-2">Местоположение</b> {{ camera.location.get_location }}
+                </li>
+                <li class="list-group-item bg-light">
+                    <b class="mr-2">Текущее состояние</b> {{ camera.state.get_state }}
+                </li>
+                <li class="list-group-item">
+                    <b class="mr-2">Журнал</b> {{ camera.state.logs }}
+                </li>
+            </ul>
+            <h5 class="mt-4">Спецификации</h5>
+            <ul class="list-group mt-3">
+                <li class="list-group-item bg-light">
+                    <b class="mr-2">Тип</b> {{ camera.specifications.get_type_display }}
+                </li>
+                <li class="list-group-item">
+                    <b class="mr-2">Производитель</b> {{ camera.specifications.producer.organization }}
+                </li>
+                <li class="list-group-item bg-light">
+                    <b class="mr-2">Дата производства</b> {{ camera.specifications.date_of_manufacture }}
+                </li>
+                <li class="list-group-item">
+                    <b class="mr-2">Плановое обслуживание</b> раз в {{ camera.specifications.service_frequency }} дней
+                </li>
+            </ul>
+    </div>
+{% endblock %}
