@@ -5,7 +5,7 @@ const deleteEventListener = event => {
 
     const {id} = event.target.dataset;
 
-    if (confirm("Вы уверены, что хотите удалить камеру?")) {
+    if (confirm("Вы уверены?")) {
         document.querySelector(`.delete-form[data-id="${id}"]`).submit();
     }
 }

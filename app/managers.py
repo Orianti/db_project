@@ -59,6 +59,9 @@ class ServiceManager(models.Manager):
         return self.filter(camera=pk)
 
     def get_latest_by_camera(self, pk):
+        return self.filter(camera=pk).order_by('-service_data')
+
+    def get_new_by_camera(self, pk):
         return self.filter(camera=pk).order_by('service_data')
 
     def get_not_served(self):

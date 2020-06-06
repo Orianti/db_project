@@ -7,12 +7,28 @@
 {% block content %}
     <div class="container mt-4">
         <div class="row">
-            <div class="col-10 align-self-center">
+            <div class="col-8 align-self-center">
                 <h3>Список неисправных камер</h3>
             </div>
-            <div class="col-2 align-self-center text-right">
+            <div class="col-1 text-right align-self-center">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Сортировка
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{% url 'audit_camera' %}">
+                            Сначала более важные
+                        </a>
+                        <a class="dropdown-item" href="{% url 'audit_camera_reverse' %}">
+                            Сначала менее важные
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 align-self-center text-right">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Добавить сервис
+                    🞣 Добавить сервис
                 </button>
             </div>
         </div>

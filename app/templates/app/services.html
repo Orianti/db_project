@@ -10,13 +10,34 @@
     </div>
 
     <div class="container">
-        <div class="my-4">
-            <a href="/audit">
-                <button type="button" class="btn btn-secondary">
-                    ⮠ Вернуться к списку
-                </button>
-            </a>
+        <div class="row">
+
+            <div class="col-6 my-4">
+                <a href="/audit">
+                    <button type="button" class="btn btn-secondary">
+                        ⮠ Вернуться к списку
+                    </button>
+                </a>
+            </div>
+
+            <div class="col-6 my-4 text-right align-self-center">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Сортировка
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{% url 'camera_services' camera.pk %}">
+                            Сначала новые
+                        </a>
+                        <a class="dropdown-item" href="{% url 'camera_services_reverse' camera.pk%} ">
+                            Сначала старые
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         {% if not services %}
             <div class="alert alert-light" role="alert">
@@ -25,10 +46,12 @@
         {% else %}
 
             {% for service in services %}
+
                 <h5 class="mt-4">Обслуживание №{{ service.pk }}</h5>
                 <ul class="list-group">
                     <li class="list-group-item bg-light">
-                        <b class="mr-2">Сервисная организация</b> {{ service.service_organization.organization }}
+                        <b class="mr-2">Сервисная
+                            организация</b> {{ service.service_organization.organization }}
                     </li>
                     <li class="list-group-item">
                         <b class="mr-2">Дата регистрации сервиса</b> {{ service.registration_date }}
@@ -40,7 +63,9 @@
                         <b class="mr-2">Информация</b> {{ service.info }}
                     </li>
                 </ul>
+
             {% endfor %}
+            </div>
         {% endif %}
 
     </div>

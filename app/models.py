@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 from app.managers import SpecificationsManager, CameraManager, ServiceManager
@@ -74,7 +76,7 @@ class Producer(models.Model):
 class Specifications(models.Model):
     TYPES = (
         (0, 'SPEED'),
-        (1, 'AVERAGE_SPEED'),
+        (1, 'AVERAGE SPEED'),
         (2, 'RED LIGHT'),
         (3, 'DOUBLE WHITE LINE'),
         (4, 'BUS LANE'),
@@ -129,6 +131,12 @@ class ServiceOrganization(models.Model):
 
     def __str__(self):
         return self.organization
+
+    def is_approaching(self):
+        return 0 < (self.contract_expires - datetime.date.today()).days < 30
+
+    def is_expired(self):
+        return self.contract_expires < datetime.date.today()
 
     class Meta:
         verbose_name = 'сервисная организация'

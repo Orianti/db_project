@@ -42,32 +42,35 @@
     </div>
 </header>
 
-{% if request.path != login %}
+
     <div class="container mt-4 mb-4">
         <ul class="nav nav-pills">
-            <li class="nav-item border bg-light rounded mr-2">
-                {% url 'camera_list' as url_camera_list %}
+            {% if perms.app.add_camera %}
+                <li class="nav-item border bg-light rounded mr-2">
+                    {% url 'camera_list' as url_camera_list %}
 
-                <a class="nav-link {% if request.path == url_camera_list %} active {% endif %}"
-                   href="{{ url_camera_list }}">Редактирование камер</a>
-            </li>
+                    <a class="nav-link {% if request.path == url_camera_list %} active {% endif %}"
+                       href="{{ url_camera_list }}">Редактирование камер</a>
+                </li>
 
-            <li class="nav-item border bg-light rounded mr-2">
-                {% url 'audit_camera' as url_audit_camera %}
+                <li class="nav-item border bg-light rounded mr-2">
+                    {% url 'audit_camera' as url_audit_camera %}
 
-                <a class="nav-link {% if request.path == url_audit_camera %} active {% endif %}"
-                   href="{{ url_audit_camera }}">Аудит камер</a>
-            </li>
+                    <a class="nav-link {% if request.path == url_audit_camera %} active {% endif %}"
+                       href="{{ url_audit_camera }}">Аудит камер</a>
+                </li>
+            {% endif %}
 
-            <li class="nav-item border bg-light rounded">
-                {% url 'service_org_list' as url_service_org_list %}
+            {% if perms.app.add_serviceorganization %}
+                <li class="nav-item border bg-light rounded">
+                    {% url 'service_org_list' as url_service_org_list %}
 
-                <a class="nav-link {% if request.path == url_service_org_list %} active {% endif %}"
-                   href="{{ url_service_org_list }}">Сервисные организации</a>
-            </li>
-        </ul>
+                    <a class="nav-link {% if request.path == url_service_org_list %} active {% endif %}"
+                       href="{{ url_service_org_list }}">Сервисные организации</a>
+                </li>
+                </ul>
+            {% endif %}
     </div>
-{% endif %}
 
 {% block content %}{% endblock %}
 

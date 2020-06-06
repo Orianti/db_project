@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Редактирование
+    Сервисные организации
 {% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
             </div>
             <div class="col-3 align-self-center text-right">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Добавить организацию
+                    🞣 Добавить организацию
                 </button>
             </div>
         </div>
@@ -83,9 +83,19 @@
 
                 <div class="col-2">
                     {{ organization.contract_expires }}
+                    {% if organization.is_approaching %}
+                        <span class="badge badge-pill badge-warning ">
+                            !
+                        </span>
+                    {% elif organization.is_expired %}
+                        <span class="badge badge-pill badge-danger">
+                            !
+                        </span>
+                    {% endif %}
                 </div>
 
-                <form class="delete-form" data-id="{{ organization.pk }}" action="{% url 'service_org_delete' organization.pk %}" method="post">
+                <form class="delete-form" data-id="{{ organization.pk }}"
+                      action="{% url 'service_org_delete' organization.pk %}" method="post">
                     {% csrf_token %}
                 </form>
 
